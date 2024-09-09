@@ -10,9 +10,15 @@
 <body>
     <div class="canvasContainer">
         <div class="container"></div>
-        <button id="containerBtn">Make new canvas</button>
-        <button class="darkerBtn" id="darkerUp">-</button>
-        <button class="darkerBtn" id="darkerDown">+</button>
+        <div class="function-container">
+            <button class="makeNewCanvaBtn">Make new canvas</button>
+
+            <div class="eraser-container">
+                <input type="checkbox" id="eraser" name="Eraser" value="Eraser">
+                <label for="Eraser">🧽</label><br>
+            </div>
+        </div>
+        <div class="decress-opaciti-text">To decrease opacity press <kbd>CTR</kbd>+clik</div>
     </div>
     <script src="./GridScrip.js"></script>
 </body>

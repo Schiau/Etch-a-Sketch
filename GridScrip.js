@@ -1,15 +1,29 @@
 const containerRef = document.getElementsByClassName("container").item(0)
-const gridSizeBtnRef = document.getElementById("containerBtn")
-const darkerBtnUp = document.getElementById("darkerUp")
-const darkerBtnDown = document.getElementById("darkerDown")
+const gridSizeBtnRef = document.getElementsByClassName("makeNewCanvaBtn").item(0)
+const eraserCheckRef = document.getElementById("eraser");
+let erase = false
 const MAX_GRID_SIZE = 100
 
-function clickEvenet(e, currentDiv, divColor){
+function clickEvenet(e, currentDiv, divColor, incremenet){
+    let opacity = 0.0
+    if(!erase){
+        opacity = +currentDiv.style.opacity+incremenet
+        opacity = Math.max(0.1, Math.min(opacity, 1))
+    } else{
+        divColor = "white"
+    }
 
-    let opacity = +currentDiv.style.opacity+0.1
-    if(opacity > 1) opacity = 1
     currentDiv.style.opacity = opacity
-    currentDiv.style.backgroundColor = divColor
+    currentDiv.style.backgroundColor = divColor  
+}
+
+function clickLeft(e,div, divColor){
+    clickEvenet(e,div, divColor, 0.1)
+} 
+function clickRight(e,div, divColor){ 
+    if(e.ctrlKey){
+        clickEvenet(e,div, divColor, -0.2)
+    }
 }
 
 function newColor(){
@@ -25,7 +39,8 @@ function createNewDiv(flexBasis){
     div.className = "container-element"
     div.style.flexBasis= flexBasis
     div.style.opacity = 0.1
-    div.addEventListener("click",(e) => clickEvenet(e,div, divColor))
+    div.addEventListener("click",(e) => clickLeft(e,div, divColor))
+    div.addEventListener("click", (e => clickRight(e,div, divColor)))
     return div
 }
 
@@ -54,16 +69,11 @@ function newGrid(e){
     alert(`Invalid grid size(max ${MAX_GRID_SIZE})`)
 }
 
-function ChangeDarkness(e, incremenet){
-    currentDarkness+=incremenet
-    currentDarkness = Math.max(0, Math.min(1, currentDarkness));
-    let containerElements = document.getElementsByClassName("container-element");
-    Array.from(containerElements).forEach(element => {
-        element.style.opacity = currentDarkness;
-    });
+
+function checkEraser(e){
+    erase = !erase
 }
 
-darkerBtnUp.addEventListener("click",e => ChangeDarkness(e, 0.1))
-darkerBtnDown.addEventListener("click",e => ChangeDarkness(e, -0.1))
 gridSizeBtnRef.addEventListener("click", newGrid);
+eraserCheckRef.addEventListener("change", checkEraser)
 newGrid(null)
